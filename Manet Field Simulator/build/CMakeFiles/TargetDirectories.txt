@@ -1,0 +1,8 @@
+D:/Users/HP/Manet Field Simulator/build/CMakeFiles/Magnets.dir
+D:/Users/HP/Manet Field Simulator/build/CMakeFiles/Sensors.dir
+D:/Users/HP/Manet Field Simulator/build/CMakeFiles/Simulator.dir
+D:/Users/HP/Manet Field Simulator/build/CMakeFiles/edit_cache.dir
+D:/Users/HP/Manet Field Simulator/build/CMakeFiles/rebuild_cache.dir
+D:/Users/HP/Manet Field Simulator/build/OpenGL/CMakeFiles/glad.dir
+D:/Users/HP/Manet Field Simulator/build/OpenGL/CMakeFiles/edit_cache.dir
+D:/Users/HP/Manet Field Simulator/build/OpenGL/CMakeFiles/rebuild_cache.dir
