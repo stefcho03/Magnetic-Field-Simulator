@@ -13,6 +13,7 @@ add_library(Magnets
     Magnets/Src/defaultmagnet.cpp
     Magnets/Src/cubicmagnet.cpp
     Magnets/Src/cylindermagnet.cpp
+    Magnets/Src/helpfunctions.cpp
 )
 
 target_include_directories(Magnets PUBLIC

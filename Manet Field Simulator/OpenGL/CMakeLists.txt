@@ -1,13 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 project(OpenGLEngine)
 
-# # ---- Temporary -----
-# set(GLFW3_INCLUDE_DIR "C:/ProgramData/chocolatey/lib/glfw3/include")
-# set(GLFW3_LIBRARY "C:/ProgramData/chocolatey/lib/glfw3/lib/glfw3.lib")
-# set(GLFW3_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/GLFW)
-# set(GLFW_STATIC_LIBRARIES "C:/ProgramData/chocolatey/lib/glfw3/lib/glfw3.lib")
-
-
 # ---- GLAD ----
 add_library(glad STATIC
     src/glad.c
@@ -17,10 +10,10 @@ target_include_directories(glad PUBLIC
 )
 
 # ---- GLFW ----
+# you should set your glfw folder here. In this project it's built and installed separately
+# so the config and target files are already generated. This wouldnt be the case if using choco 
 set(GLFW3_DIR "D:/Users/HP/GLFW3/glfw-install-mingw/lib/cmake/glfw3")
 find_package(GLFW3 REQUIRED) 
-# include_directories(${GLFW_INCLUDE_DIR})
-# target_link_libraries(simple ${GLFW_STATIC_LIBRARIES})
 
 # ---- Engine ----
 add_library(OpenGLEngine INTERFACE)
