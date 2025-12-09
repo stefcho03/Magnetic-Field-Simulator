@@ -7,7 +7,11 @@
 class CylinderMagnet : public Magnet
 {
 public:
-    CylinderMagnet (float x, float y, float z, uint16_t height, uint16_t radius, float magnetization);
+    CylinderMagnet (std::array<float, 3>& position,
+    std::array<float, 3>& orientation,
+    uint16_t height,
+    uint16_t radius,
+    float magnetization);
 
 private:
     uint16_t m_height, m_radius;

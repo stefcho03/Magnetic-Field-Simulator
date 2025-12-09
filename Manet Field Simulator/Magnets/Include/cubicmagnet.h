@@ -7,7 +7,10 @@
 class CubicMagnet : public Magnet
 {
 public:
-    CubicMagnet (float x, float y, float z, uint16_t side, float magnetization);
+    CubicMagnet (std::array<float, 3>& position,
+    std::array<float, 3>& orientation,
+    uint16_t side,
+    float magnetization);
 
 private:
     uint16_t m_side;

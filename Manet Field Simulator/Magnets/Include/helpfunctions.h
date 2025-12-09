@@ -1,11 +1,15 @@
 #ifndef MAGNETS_INCLUDE_HELPFUNCTIONS_
 #define MAGNETS_INCLUDE_HELPFUNCTIONS_
+#define _USE_MATH_DEFINES
 
 #include <array>
 #include <concepts>
+#include <math.h>
 
 template <typename T>
 concept Quaternion = std::same_as<T, std::array<float, 4>>;
+
+static constexpr float mu0 = 4.0f * M_PI * 1e-7f;
 
 class HelpFunctions
 {
