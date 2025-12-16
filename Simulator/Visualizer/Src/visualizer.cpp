@@ -1,7 +1,5 @@
-#include <callbacks.h>
-#include <stdio.h>
 #include <visualizer.h>
-#include <visualizerinput.h>
+#include <stdio.h>
 
 Visualizer::Visualizer (size_t width, size_t height)
 {
@@ -13,6 +11,7 @@ Visualizer::Visualizer (size_t width, size_t height)
 
 	glfwWindowHint (GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint (GLFW_CONTEXT_VERSION_MINOR, 3);
+	glfwWindowHint (GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE); // for macOS
 	glfwWindowHint (GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	m_window = glfwCreateWindow (width, height, "Magnetic Field Simulator", nullptr, nullptr);
@@ -42,17 +41,15 @@ Visualizer::~Visualizer ()
 
 void Visualizer::run ()
 {
+	m_renderer.init ();
+	glClearColor (0.1f, 0.3f, 0.3f, 1.0f);
+
 	while (!glfwWindowShouldClose (m_window))
 	{
 		processInput (m_window);
-		glClear (GL_COLOR_BUFFER_BIT);
-		glClearColor (0.1f, 0.3f, 0.3f, 1.0f);
-		float vertices[] = { -0.5f, -0.5f, 0.0f, 0.5f, -0.5f, 0.0f, 0.0f, 0.5f, 0.0f };
-		unsigned int VBO;
-		glGenBuffers (1, &VBO);
-		glBindBuffer (GL_ARRAY_BUFFER, VBO);
-		glBufferData (GL_ARRAY_BUFFER, sizeof (vertices), vertices, GL_STATIC_DRAW);
-		glfwSwapBuffers (m_window);
+		m_renderer.beginFrame ();
+		m_renderer.drawTriangle ();
+		m_renderer.endFrame (m_window);
 		glfwPollEvents ();
 	}
 }

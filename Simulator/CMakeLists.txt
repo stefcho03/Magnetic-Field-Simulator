@@ -40,12 +40,38 @@ add_library(Visualizer
     Visualizer/Src/visualizer.cpp
     Visualizer/Src/callbacks.cpp
     Visualizer/Src/visualizerinput.cpp
+    Visualizer/Src/renderer.cpp
+    Visualizer/Shaders/Src/shader.cpp
 )
+
+# ---- Shaders ----
+file(GLOB_RECURSE SHADERS
+    "${CMAKE_CURRENT_SOURCE_DIR}/Visualizer/Shaders/**/*.vert"
+    "${CMAKE_CURRENT_SOURCE_DIR}/Visualizer/Shaders/**/*.frag")
+
+# I am losing my mind
+message(STATUS "Shader files:")
+foreach(S ${SHADERS})
+    message(STATUS "  ${S}")
+endforeach()
+
+foreach(SHADER ${SHADERS})
+    file(RELATIVE_PATH REL_PATH
+        ${CMAKE_CURRENT_SOURCE_DIR}/Visualizer/Shaders
+        ${SHADER})
+
+    configure_file(
+        ${SHADER} 
+        ${CMAKE_CURRENT_BINARY_DIR}/Visualizer/Shaders/${REL_PATH} COPYONLY)
+endforeach()
+
+
 
 target_link_libraries(Visualizer PUBLIC OpenGLEngine)
 
 target_include_directories(Visualizer PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/Visualizer/Include
+    ${CMAKE_CURRENT_SOURCE_DIR}/Visualizer/Shaders/Include
 )
 
 # ---- Executable ----
