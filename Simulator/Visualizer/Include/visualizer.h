@@ -4,6 +4,7 @@
 #include <visualizerinput.h>
 #include <renderer.h>
 #include <callbacks.h>
+#include <mesh.h>
 
 class Visualizer
 {
@@ -14,7 +15,6 @@ public:
 
 private:
 	GLFWwindow* m_window;
-	Renderer m_renderer;
 };
 
 #endif // VISUAlIZER_INCLUDE_VISUALIZER_

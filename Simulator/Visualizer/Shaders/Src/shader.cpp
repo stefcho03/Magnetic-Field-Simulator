@@ -4,34 +4,37 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
-#include <filesystem>
+
+// Please excuse the overly descriptive comments
 
 Shader::Shader (const char* vertexPath, const char* fragmentPath)
 {
+	std::stringstream vShaderStream, fShaderStream;
 	std::string vertexCode;
 	std::string fragmentCode;
-	std::ifstream vShaderFile (vertexPath);
 
 	// Please check your spellig before any suicide attempts
+	std::ifstream vShaderFile (vertexPath); // Open vertex file
 	if (!vShaderFile.is_open ())
 	{
 		std::cerr << "ERROR: Could not open shader file: " << vertexPath << '\n';
 		std::exit (EXIT_FAILURE);
 	}
-	std::cout << "Trying to open fragment shader at: " << std::filesystem::absolute (fragmentPath) << '\n';
-	std::ifstream fShaderFile (fragmentPath);
+
+	std::ifstream fShaderFile (fragmentPath); // Open fragment file
 	if (!fShaderFile.is_open ())
 	{
 		std::cerr << "ERROR: Could not open shader file: " << fragmentPath << '\n';
 		std::exit (EXIT_FAILURE);
 	}
-	std::stringstream vShaderStream, fShaderStream;
 
+	// Read files in stream
 	vShaderStream << vShaderFile.rdbuf ();
 	fShaderStream << fShaderFile.rdbuf ();
+	// Stream -> string
 	vertexCode = vShaderStream.str ();
 	fragmentCode = fShaderStream.str ();
-
+	// String -> pointer
 	const char* vShaderCode = vertexCode.c_str ();
 	const char* fShaderCode = fragmentCode.c_str ();
 
@@ -41,9 +44,9 @@ Shader::Shader (const char* vertexPath, const char* fragmentPath)
 
 	// vertex shader
 	vertex = glCreateShader (GL_VERTEX_SHADER);
-	glShaderSource (vertex, 1, &vShaderCode, nullptr);
+	glShaderSource (vertex, 1, &vShaderCode, nullptr); // Attach source code to object. Object, number of strings, pointer to string
 	glCompileShader (vertex);
-	glGetShaderiv (vertex, GL_COMPILE_STATUS, &success);
+	glGetShaderiv (vertex, GL_COMPILE_STATUS, &success); // Check if shader compilation is successful
 	if (!success)
 	{
 		glGetShaderInfoLog (vertex, 512, nullptr, infoLog);
@@ -51,7 +54,7 @@ Shader::Shader (const char* vertexPath, const char* fragmentPath)
 		std::exit (EXIT_FAILURE);
 	}
 
-	// fragment shader
+	// fragment shader (Rinse and repeat)
 	fragment = glCreateShader (GL_FRAGMENT_SHADER);
 	glShaderSource (fragment, 1, &fShaderCode, nullptr);
 	glCompileShader (fragment);
