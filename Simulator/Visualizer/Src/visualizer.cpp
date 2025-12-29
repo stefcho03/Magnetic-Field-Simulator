@@ -1,8 +1,12 @@
 #include <visualizer.h>
+#include <cubegenerator.h>
 #include <stdio.h>
 #include <cmath>
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 Visualizer::Visualizer (size_t width, size_t height)
 {
@@ -50,37 +54,26 @@ void Visualizer::run ()
 {
 	if (!m_window)
 		return;
-	Mesh triangleMesh ({ 0.5f, -0.5f, 0.0f, 0.5f, 0.5f, 0.0f, -0.5f, 0.5f, 0.0f });
-	std::vector<float> circleVertices = { 0.0f, 0.0f, 0.0f }; // center
-	std::vector<unsigned int> circleIndices;
-	size_t faces = 100;
-	float step = 2 * M_PI / faces;
-	float radius = 0.5f;
-	for (size_t i; i <= faces; i++)
-	{
-		circleVertices.push_back (radius * sin (i * step));
-		circleVertices.push_back (radius * cos (i * step));
-		circleVertices.push_back (0.0f);
-	}
-	for (size_t i = 1; i <= faces; i++)
-	{
-		circleIndices.push_back (0);
-		circleIndices.push_back (i);
-		circleIndices.push_back (i + 1);
-	}
-
-	circleIndices.push_back (0);
-	circleIndices.push_back (faces);
-	circleIndices.push_back (1);
-	Mesh circleMesh (circleVertices, circleIndices);
-
-	Shader shader ("Visualizer/Shaders/Static/triangle.vert", "Visualizer/Shaders/Static/triangle.frag");
-	Renderer renderer (&shader);
+	std::array<float, 3> cubePosition = { 0.0f, 0.0f, 0.0f };
+	CubeGenerator cubeGenerator (0.5f, cubePosition);
+	Mesh cube (cubeGenerator.vertices (), cubeGenerator.indices ());
+	Shader dynamicShader ("Visualizer/Shaders/Dynamic/dynamic.vert", "Visualizer/Shaders/Dynamic/dynamic.frag");
+	Renderer dynamicRenderer (&dynamicShader);
+	glEnable (GL_DEPTH_TEST);
 	while (!glfwWindowShouldClose (m_window))
 	{
+		float time = glfwGetTime ();
 		processInput (m_window);
-		renderer.beginFrame ();
-		renderer.draw (circleMesh);
-		renderer.endFrame (m_window);
+		dynamicRenderer.beginFrame ();
+
+		glm::mat4 model = glm::mat4 (1.0f);
+		model = glm::rotate (model, glm::radians (180.0f) * cos (time), glm::vec3 (sin (time) * 0.5f, 0.0f, 0.5f));
+
+		dynamicShader.use (); // <- MUST be called before setting uniforms
+		unsigned int loc = glGetUniformLocation (dynamicShader.ID, "u_Transform");
+		glUniformMatrix4fv (loc, 1, GL_FALSE, glm::value_ptr (model));
+
+		cube.draw ();
+		dynamicRenderer.endFrame (m_window);
 	}
 }
