@@ -1,7 +1,7 @@
 #include <mesh.h>
 
-Mesh::Mesh (const std::vector<float>& vertices, const std::vector<unsigned int>& indices)
-: m_vertexCount (vertices.size () / 3), m_indexCount (indices.size ()), m_hasIndices (!indices.empty ())
+Mesh::Mesh (const std::vector<float>& vertices, const std::vector<unsigned int>& indices, PrimitiveType type)
+: m_vertexCount (vertices.size () / 3), m_indexCount (indices.size ()), m_hasIndices (!indices.empty ()), m_type (type)
 {
 	glGenVertexArrays (1, &m_VAO);
 	glGenBuffers (1, &m_VBO);
@@ -31,13 +31,55 @@ Mesh::Mesh (const std::vector<float>& vertices, const std::vector<unsigned int>&
 	glBindVertexArray (0);
 }
 
+Mesh::Mesh (Mesh&& other) noexcept
+: m_VAO (other.m_VAO), m_VBO (other.m_VBO), m_EBO (other.m_EBO), m_vertexCount (other.m_vertexCount), m_indexCount (other.m_indexCount),
+  m_hasIndices (other.m_hasIndices), m_type (other.m_type)
+{
+	other.m_VAO = 0;
+	other.m_VBO = 0;
+	other.m_EBO = 0;
+	other.m_vertexCount = 0;
+	other.m_indexCount = 0;
+	other.m_hasIndices = false;
+	other.m_type = PrimitiveType::Triangles;
+}
+
+// Copy constructor
+Mesh& Mesh::operator= (Mesh&& other) noexcept
+{
+	if (this != &other)
+	{
+		cleanup ();
+		m_VAO = other.m_VAO;
+		m_VBO = other.m_VBO;
+		m_EBO = other.m_EBO;
+		m_vertexCount = other.m_vertexCount;
+		m_indexCount = other.m_indexCount;
+		m_hasIndices = other.m_hasIndices;
+		m_type = other.m_type;
+
+		other.m_VAO = 0;
+		other.m_VBO = 0;
+		other.m_EBO = 0;
+		other.m_vertexCount = 0;
+		other.m_indexCount = 0;
+		other.m_hasIndices = false;
+		other.m_type = PrimitiveType::Triangles;
+	}
+	return *this;
+}
+
 void Mesh::draw () const
 {
 	glBindVertexArray (m_VAO);
+
+	GLenum mode = (m_type == PrimitiveType::Triangles) ? GL_TRIANGLES : GL_LINES;
+
 	if (m_hasIndices)
-		glDrawElements (GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, 0);
+		glDrawElements (mode, m_indexCount, GL_UNSIGNED_INT, nullptr);
 	else
-		glDrawArrays (GL_TRIANGLES, 0, m_vertexCount);
+		glDrawArrays (mode, 0, m_vertexCount);
+
 	glBindVertexArray (0);
 }
 
@@ -56,8 +98,16 @@ bool Mesh::usesIndices () const
 
 Mesh::~Mesh ()
 {
-	glDeleteVertexArrays (1, &m_VAO);
-	glDeleteBuffers (1, &m_VBO);
-	if (m_hasIndices)
+	cleanup ();
+}
+
+void Mesh::cleanup ()
+{
+	if (m_VAO)
+		glDeleteVertexArrays (1, &m_VAO);
+	if (m_VBO)
+		glDeleteBuffers (1, &m_VBO);
+	if (m_EBO)
 		glDeleteBuffers (1, &m_EBO);
+	printf ("Mesh destructor (VAO=%u)\n", m_VAO);
 }

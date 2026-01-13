@@ -6,15 +6,14 @@
 class MagnetInterface
 {
 public:
-    virtual void move (float x, float y, float z) = 0;
-    virtual void rotate (float degrees, std::array<float, 3> axis) = 0;
-    virtual void
-    rotate (float degrees, std::array<float, 3> axis, std::array<float, 3> anchor) = 0;
-    virtual std::array<float, 3>& position () = 0;
-    virtual std::array<float, 3>& orientation () = 0;
-    virtual float magnetization () = 0;
-    virtual std::array<float, 3> field (std::array<float, 3> position) = 0;
-    virtual ~MagnetInterface () = default;
+	virtual void move (float x, float y, float z) = 0;
+	virtual void rotate (float degrees, std::array<float, 3>& axis) = 0;
+	virtual void rotate (float degrees, std::array<float, 3>& axis, std::array<float, 3>& anchor) = 0;
+	virtual std::array<float, 3>& position () = 0;
+	virtual std::array<float, 3>& orientation () = 0;
+	virtual float magnetization () = 0;
+	virtual std::array<float, 3> field (const std::array<float, 3>& position) = 0;
+	virtual ~MagnetInterface () = default;
 };
 
 #endif // MAGNETS_INCLUDE_MAGNETINTERFACE_

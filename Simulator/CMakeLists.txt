@@ -1,8 +1,12 @@
 cmake_minimum_required(VERSION 3.20)
 project(magnetSimulator)
 
+# set(CMAKE_BUILD_TYPE Debug)
+# set(CMAKE_CXX_FLAGS_DEBUG "-g -O0")
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
 # ---- Add engine ----
 add_subdirectory(OpenGL)
@@ -34,14 +38,32 @@ target_include_directories(Sensors PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/Sensors/Include
 )
 
+# ---- Meshes ----
+add_library(Meshes 
+    Meshes/Src/mesh.cpp
+    Meshes/Src/cubegenerator.cpp
+    Meshes/Src/cylindergenerator.cpp
+    Meshes/Src/gridgenerator.cpp
+)
+
+target_include_directories(Meshes PUBLIC
+    ${CMAKE_CURRENT_SOURCE_DIR}/Meshes/Include
+)
+
+target_link_libraries(Meshes PUBLIC 
+    OpenGLEngine
+)
+
 # ---- Visualizer ----
 
 add_library(Visualizer
     Visualizer/Src/visualizer.cpp
     Visualizer/Src/callbacks.cpp
-    Visualizer/Src/visualizerinput.cpp
+    Visualizer/Src/inputhandler.cpp
     Visualizer/Src/renderer.cpp
+    Visualizer/Src/sceneobject.cpp
     Visualizer/Shaders/Src/shader.cpp
+    Visualizer/Src/camera.cpp
 )
 
 # ---- Shaders ----
@@ -67,11 +89,15 @@ endforeach()
 
 
 
-target_link_libraries(Visualizer PUBLIC OpenGLEngine)
+target_link_libraries(Visualizer PUBLIC 
+    OpenGLEngine
+    Meshes
+)
 
 target_include_directories(Visualizer PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/Visualizer/Include
     ${CMAKE_CURRENT_SOURCE_DIR}/Visualizer/Shaders/Include
+    ${CMAKE_CURRENT_SOURCE_DIR}/Meshes/Include
 )
 
 # ---- Executable ----
