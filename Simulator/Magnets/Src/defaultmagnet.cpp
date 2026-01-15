@@ -1,6 +1,7 @@
 #include <cmath>
 #include <defaultmagnet.h>
 #include <helpfunctions.h>
+#include <stdio.h>
 
 Magnet::Magnet (std::array<float, 3> position, std::array<float, 3> orientation, float magnetization)
 : m_position{ position[0], position[1], position[2] }, m_orientation{ orientation[0], orientation[1], orientation[2] }, m_magnetization (magnetization)

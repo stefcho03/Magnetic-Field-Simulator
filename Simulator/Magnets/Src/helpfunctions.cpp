@@ -1,6 +1,5 @@
 #include <helpfunctions.h>
 
-
 std::array<float, 4> HelpFunctions::quaternion (float degrees, std::array<float, 3> axis)
 {
     float radians = degrees / 180;

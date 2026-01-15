@@ -1,4 +1,5 @@
 #include <cylindermagnet.h>
+#include <stdio.h>
 
 CylinderMagnet::CylinderMagnet (std::array<float, 3>& position, std::array<float, 3>& orientation, uint16_t height, uint16_t radius, float magnetization)
 

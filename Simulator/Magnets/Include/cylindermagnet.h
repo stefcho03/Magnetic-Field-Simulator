@@ -1,5 +1,6 @@
 #include <defaultmagnet.h>
 #include <type_traits>
+#include <cstdint>
 
 #ifndef CYLINDER_MAGNET_
 #define CYLINDER_MAGNET_

@@ -1,4 +1,5 @@
 #include <cubicmagnet.h>
+#include <stdio.h>
 
 CubicMagnet::CubicMagnet (std::array<float, 3>& position, std::array<float, 3>& orientation, uint16_t side, float magnetization)
 : Magnet (position, orientation, magnetization), m_side (side)

@@ -3,6 +3,8 @@
 
 #include <array>
 #include <concepts>
+#include <cstdint>
+#include <cmath>
 
 // accepts std::array<float, 4>, std::array<double, 4> and const std::array<float, 4>&
 template <typename T>

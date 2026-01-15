@@ -1,4 +1,5 @@
 #include <inputhandler.h>
+#include <stdio.h>
 
 InputHandler::InputHandler ()
 {

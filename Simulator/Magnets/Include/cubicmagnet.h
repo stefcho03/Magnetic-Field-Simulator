@@ -1,5 +1,6 @@
 #include <defaultmagnet.h>
 #include <type_traits>
+#include <cstdint>
 
 #ifndef CUBIC_MAGNET_
 #define CUBIC_MAGNET_
