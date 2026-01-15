@@ -1,4 +1,5 @@
 #include <mesh.h>
+#include  <stdio.h>
 
 Mesh::Mesh (const std::vector<float>& vertices, const std::vector<unsigned int>& indices, PrimitiveType type)
 : m_vertexCount (vertices.size () / 3), m_indexCount (indices.size ()), m_hasIndices (!indices.empty ()), m_type (type)
