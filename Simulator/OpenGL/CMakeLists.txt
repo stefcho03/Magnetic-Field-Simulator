@@ -13,6 +13,9 @@ if(NOT OpenGL_FOUND)
 	"Ubuntu/Debian sudo apt install libgl1-mesa-dev libglx-dev mesa-common-dev \n"
 	"Arch: sudo pacman -S mesa libglvnd \n"
 	"Fedora: sudo dnf install mesa-libGL-devel \n"
+	"Note: if you are using Wayland you would have to install wayland-protocols libwayland-dev"
+)
+endif()
 
 # ---- GLAD ----
 add_library(glad STATIC
