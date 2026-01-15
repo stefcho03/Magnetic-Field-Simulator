@@ -6,6 +6,14 @@ include(FetchContent)
 # ---- OpenGL ----
 find_package(OpenGL REQUIRED)
 
+if(NOT OpenGL_FOUND)
+    message(FATAL_ERROR
+	"OpenGL not found. This most probably means that you are on Linux. \n"
+	"The program needs the packages to work and you need to install them manually. \n"
+	"Ubuntu/Debian sudo apt install libgl1-mesa-dev libglx-dev mesa-common-dev \n"
+	"Arch: sudo pacman -S mesa libglvnd \n"
+	"Fedora: sudo dnf install mesa-libGL-devel \n"
+
 # ---- GLAD ----
 add_library(glad STATIC
     src/glad.c
