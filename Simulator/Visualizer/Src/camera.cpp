@@ -1,4 +1,5 @@
 #include <camera.h>
+#include <stdio.h>
 
 Camera::Camera (float posX, float posY, float posZ, float upX, float upY, float upZ, float yaw, float pitch)
 : m_cameraFront (glm::vec3 (0.0f, 0.0f, -1.0f)), m_panSensitivity (PANSENSITIVITY), m_rotateSensitivity (ROTATESENSITIVITY), m_scrollSensitivity (ZOOM)
@@ -24,11 +25,13 @@ void Camera::processMouseMouseInput (bool rotate, bool move, double dx, double d
 
 	if (move)
 	{
-		double pdx = dx * m_panSensitivity;
-		double pdy = dy * m_panSensitivity;
+		double pdx = dx * m_panSensitivity * distance();
+		double pdy = dy * m_panSensitivity * distance();
 
 		m_cameraPos -= m_cameraRight * (float)pdx;
 		m_cameraPos += m_cameraUp * (float)pdy;
+		m_cameraTarget -= m_cameraRight * (float)pdx;
+		m_cameraTarget += m_cameraUp * (float)pdy;
 	}
 
 	updateCameraVectors ();
@@ -61,4 +64,9 @@ void Camera::updateCameraVectors ()
 	// normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
 	m_cameraRight = glm::normalize (glm::cross (m_cameraFront, m_up));
 	m_cameraUp = glm::normalize (glm::cross (m_cameraRight, m_cameraFront));
+}
+
+float Camera::distance()
+{
+	return glm::length(m_cameraPos - m_cameraTarget);
 }

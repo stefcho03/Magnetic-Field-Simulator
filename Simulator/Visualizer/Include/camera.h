@@ -17,7 +17,7 @@ enum Camera_Movement
 const float YAW = -90.0f;
 const float PITCH = 0.0f;
 const float SPEED = 2.5f;
-const float PANSENSITIVITY = 0.01f;
+const float PANSENSITIVITY = 0.0015f;
 const float ROTATESENSITIVITY = 0.1f;
 const float ZOOM = 5.0f;
 
@@ -32,6 +32,7 @@ public:
 
 private:
 	void updateCameraVectors ();
+	float distance();
 
 	glm::vec3 m_cameraPos;
 	glm::vec3 m_cameraTarget;
